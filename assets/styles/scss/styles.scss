@@ -1,0 +1,216 @@
+$purple100: #7945fd;
+$purple900: #5f2cd3;
+
+$red: #fe6687;
+$yellow: #ffcc69;
+
+
+//utilities//
+.d-flex {
+	display: flex;
+	&--justify {
+		justify-content: space-between;
+	}
+}
+.bg-red {background-color: $red;}
+.bg-yellow {background-color: $yellow;}
+/////////////////
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	font-weight: 400;
+  	font-size: 16px;
+  	font-style: normal;
+  	text-transform: uppercase;
+}
+
+body {
+	background-color: $purple100;
+	font-family: "Nunito", sans-serif;
+  	font-optical-sizing: auto;
+  	color: #fff;
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	height: 100vh;
+  	padding-inline: 1em;
+}
+
+header {
+	position: relative;
+	h1 {
+		font-size: 1.25rem;
+		font-weight: 900;
+		letter-spacing: 1px;
+	}
+}
+
+header > .d-flex {
+	align-items: center;
+	.logo {
+		position: absolute;
+		left: 50%; top: 50%;
+		translate: -50% -50%;
+		display: grid;
+		gap: 5px;
+		grid-template-columns: auto auto;
+		grid-template-rows: auto auto;
+
+		.logo-circle {
+			display: block;
+			width: 20px; aspect-ratio: 1/1;
+			border-radius: 50%;
+			border: 2px solid #111;
+		}
+	}
+}
+
+#game {
+    position: relative; /* To position animated-disc absolutely within #game */
+}
+
+.board {
+	display: grid;
+    grid-template-columns: repeat(7, 60px);
+    grid-template-rows: repeat(6, 60px);
+    gap: 10px;
+    padding: 15px 15px 50px;
+    border-radius: 15px;
+    position: relative;
+    z-index: 1;
+    margin-block: 2em;
+    border: 3px solid #111;
+    background-image: url(../../img/game-board.webp);
+    background-size: cover;
+    box-shadow: 0 15px #111;
+    .cell {
+    	width: 60px; aspect-ratio: 1/1;
+	    border-radius: 50%;
+	    position: relative;
+	    cursor: pointer;
+	    &::after {
+	    	content: '';
+		    position: absolute;
+		    top: 5px;
+		    left: 5px;
+		    width: 50px; aspect-ratio: 1/1;
+		    background-color: transparent;
+		    border-radius: inherit;
+		    transition: background-color 0.3s;
+	    }
+	    &.player1::after {
+	    	background-color: $red;
+	    }
+	    &.player2::after {
+	    	background-color: $yellow;
+	    }
+	    &.highlight {
+	    	box-shadow: 0 0 10px 5px $red;
+	    	@keyframes highlight {
+	    		0%, 100% {
+	    			box-shadow: 0 0 15px 5px $red;
+	    		}
+	    		50% {
+	    			box-shadow: 0 0 15px 5px $yellow;
+	    		}	
+	    	}
+	    	animation: highlight 1s infinite linear;
+	    }
+    }
+}
+
+#animated-disc {
+    position: absolute;
+    top: -30px; /* Start above the board */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: $red;
+    transition: top 0.5s ease-in;
+    z-index: -1;
+    display: none;
+    &.red {
+    	background-color: $red;
+    }
+    &.yellow {
+    	background-color: $yellow;
+    }
+}
+
+#reset {
+    padding: 10px 20px;
+    background-color: $purple900;
+    border: none;
+    border-radius: 100vw;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 1px;
+}
+
+#status {
+
+    background-color: $red;
+    width: 200px; height: 100px;
+    margin-inline: auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px 5px 10px 10px;
+    border: 3px solid #111;
+    box-shadow: 0 15px #111;
+    &::before, &::after {
+    	content: "";
+    	display: block;
+    	position: absolute;
+    	width: 50.25%; height: 50%;
+    	transform: skewY(-25deg);
+    	top: -25px; left: 0;
+    	background-color: inherit;
+    	//background-color: green;
+    	z-index: -1;
+    	border-top: 3px solid #111;
+    	border-radius: 5px 0 0 0;
+    }
+    &::after {
+    	transform: skewY(25deg);
+    	left: auto; right: 0;
+    	border-radius: 0 5px 0 0;
+    }
+    p {
+    	font-size: 1.25rem;
+    	font-weight: 800;
+    	text-transform: none;
+    }
+    &.comp-turn {
+    	background-color: $yellow;
+    	p {
+    		color: #111 !important;
+    	}
+    }
+    &.user-turn {
+    	background-color: $yellow;
+    }
+    &.status-win {
+    	@keyframes pulsate {
+    		0%, 100% {
+    			scale: 1;
+    		}
+    		50% {
+    			scale: 1.25;
+    		}
+    	}
+    	animation: pulsate 2s infinite linear;
+    	border-radius: 10px;
+    	p {
+    		text-transform: uppercase;
+    	}
+    	&::before, &::after {
+    		content: none;
+    	}
+    }
+}
